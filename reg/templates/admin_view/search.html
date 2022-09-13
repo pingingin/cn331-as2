@@ -1,0 +1,39 @@
+{% extends 'admin_view/layout.html' %}
+{% block body %}
+
+<h1>ค้นหารายวิชา</h1>
+
+<form action="{% url 'admin_search' %}" method="post">
+    {% csrf_token %}
+    <h4>รหัสวิชา</h4>
+    <input type="text" name="search_id_sj" placeholder="รหัสวิชา">
+    <input type="submit" value="ค้นหา">
+</form>
+
+<h3>{{search_id_sj}}</h3>
+{% if subjects and search_id_sj%}
+    <ul>
+    {% for subject in subjects %}
+        {% if search_id_sj in subject.sub_id %}
+        <form action="{% url 'checkStu' %}" method="post">
+        {% csrf_token %}
+        <li>{{subject.sub_id}} {{subject.sub_name}} 
+            <button type="submit" name = "subject" value = "{{subject.sub_id}}">รายชื่อนักเรียน</button>
+        </li>
+        </form>
+        {% endif %}
+        <br>
+    {% empty %}
+        <li>No subject.</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+<br>
+<br>
+<br>
+<input type="button" onclick="location.href='/';" value="ย้อนกลับ">
+{% endblock %}
+

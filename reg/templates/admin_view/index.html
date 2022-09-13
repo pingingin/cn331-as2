@@ -1,0 +1,20 @@
+{% extends 'admin_view/layout.html' %}
+{% block body %}
+
+    <h1>Welcome, {{ request.user.first_name }}</h1>
+    <ul>
+        <li>{{ request.user.username }}</li>
+    </ul>
+
+    <input type="button" onclick="location.href={% url 'admin_search' %};" value="ค้นหารายวิชา">
+    <input type="button" onclick="location.href={% url 'student' %};" value="ค้นหารายชื่อนักเรียน">
+    <input type="button" onclick="location.href={% url 'logout' %};" value="ออกจากระบบ">
+
+
+
+    <br>
+    <br>
+    <br>
+    <a href="{% url 'logout' %}">Log out</a>
+
+{% endblock %}

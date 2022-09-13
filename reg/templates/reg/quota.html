@@ -1,0 +1,69 @@
+{% extends 'reg/layout.html' %}
+{% block body %}
+<h1>reg</h1>
+<h2>{{student.stu_name}}</h2>
+<input type="button" onclick="location.href={% url 'search' %};" value="ค้นหารายวิชา">
+<input type="button" onclick="location.href={% url 'quota' %};" value="ขอ/ถอนโควต้า" >
+<input type="button" onclick="location.href={% url 'status' %};" value="สถานะ">
+<input type="button" onclick="location.href={% url 'logout' %};" value="ออกจากระบบ">
+<h1>ขอ/ถอนโควต้า</h1>
+<form action="{% url 'quota' %}" method="post">
+    {% csrf_token %}
+
+<h1>รายวิชาที่ขอโควต้า</h1>
+<ul>
+{% for apply in complete_apply %}
+    <li>{{ apply.subject }} <button name="withdraw" value="{{apply.subject.sub_id}}">ถอนโควต้า</button></li>
+{% empty %}
+    <li>No apply.</li>
+{% endfor %}
+</ul> 
+
+<h1>สถานะ</h1>
+<h2>ขอ</h2>
+<ul>
+{% for apply in add_apply %}
+    <li>{{ apply }} <button name="cancel" value="{{apply.subject.sub_id}}">ยกเลิก</button></li>
+{% empty %}
+    <li>No subject.</li>
+{% endfor %}
+</ul> 
+
+<h2>ถอน</h2>
+<ul>
+{% for apply in withdraw_apply %}
+    <li>{{ apply }} <button name="cancel" value="{{apply.subject.sub_id}}">ยกเลิก</button></li>
+{% empty %}
+    <li>No subject.</li>
+{% endfor %}
+</ul> 
+
+
+<h1>ค้นหารายวิชา</h1>
+    <input type="text" name="search_subject" value="{{search_subject}}">
+    <input type="submit" value="search">
+
+{% if search_subject%}
+    <ul>
+    {% for subject in subjects %}
+        {% if search_subject in subject.sub_id %}
+            {% if subject.sub_id in complete_list %}
+                <li>{{ subject.sub_id }} {{ subject.sub_name }} {{subject.seat}}/{{subject.max_seat}} ขอโควต้าเรียบร้อย</li>
+            {% elif subject.sub_id in add_list or subject.sub_id in withdraw_list %}
+                <li>{{ subject.sub_id }} {{ subject.sub_name }} {{subject.seat}}/{{subject.max_seat}} กำลังดำเนินการ</li>
+            {% elif subject.status == "N" %}
+                <li>{{ subject.sub_id }} {{ subject.sub_name }} {{subject.seat}}/{{subject.max_seat}} ที่นั่งเต็ม</li>
+            {% else %}
+                <li>{{ subject.sub_id }} {{ subject.sub_name }} {{subject.seat}}/{{subject.max_seat}} <button name="add" type="submit" value="{{subject.sub_id}}">ขอโควต้า</button></li>
+            {% endif %}
+        {% endif %}
+    {% empty %}
+        <li>No subject.</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<br><br>
+<button name="submit" value="submit">ยืนยัน</button>
+</form>
+{% endblock %}

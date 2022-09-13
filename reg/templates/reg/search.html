@@ -1,0 +1,32 @@
+{% extends 'reg/layout.html' %}
+{% block body %}
+<h1>reg</h1>
+<h2>{{student.stu_name}}</h2>
+<input type="button" onclick="location.href={% url 'search' %};" value="ค้นหารายวิชา">
+<input type="button" onclick="location.href={% url 'quota' %};" value="ขอ/ถอนโควต้า" >
+<input type="button" onclick="location.href={% url 'status' %};" value="สถานะ">
+<input type="button" onclick="location.href={% url 'logout' %};" value="ออกจากระบบ">
+<h1>ค้นหารายวิชา</h1>
+
+<form action="{% url 'search' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="search_subject" value="{{search_subject}}">
+    <input type="submit" value="search">
+</form>
+<h1>{{search_subject}}</h1>
+
+
+
+{% if subjects and search_subject%}
+    <ul>
+    {% for subject in subjects %}
+        {% if search_subject in subject.sub_id %}
+        <li>{{ subject.sub_id }} {{ subject.sub_name }}</li>
+        {% endif %}
+    {% empty %}
+        <li>No subject.</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'reg/layout.html' %}
+{% block body %}
+<h1>reg</h1>
+<h2>{{student.stu_name}}</h2>
+<input type="button" onclick="location.href={% url 'search' %};" value="ค้นหารายวิชา">
+<input type="button" onclick="location.href={% url 'quota' %};" value="ขอ/ถอนโควต้า" >
+<input type="button" onclick="location.href={% url 'status' %};" value="สถานะ">
+<input type="button" onclick="location.href={% url 'logout' %};" value="ออกจากระบบ">
+<h1>วิชาที่ขอโควต้า</h1>
+
+
+
+    <ul>
+    {% for apply in applys %}
+        <li>{{ apply.subject }}</li>
+    {% empty %}
+        <li>No apply.</li>
+    {% endfor %}
+    </ul> 
+
+
+{% endblock %}

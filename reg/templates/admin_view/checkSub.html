@@ -1,0 +1,15 @@
+{% extends 'admin_view/layout.html' %}
+{% block body %}
+<h1>รายชื่อวิชาที่ลงของที่นักเรียน {{student}}</h1>
+
+{% for subject in list_subjects %}
+    <li> {{subject.subject.sub_id}} {{subject.subject.sub_name}}</li>
+{% endfor %}
+
+
+
+<br>
+<br>
+<br>
+<input type="button" onclick="history.back()" value="ย้อนกลับ">
+{% endblock %}

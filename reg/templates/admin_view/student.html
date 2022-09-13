@@ -1,0 +1,38 @@
+{% extends 'admin_view/layout.html' %}
+{% block body %}
+<h1>ค้นหารายชื่อนักเรียน</h1>
+
+<form action="{% url 'student' %}" method="post">
+    {% csrf_token %}
+    <h3>ชื่อนักเรียน</h3>
+    <input type="text" name="search_username" placeholder="ชื่อนักเรียน" value="{{search_username}}">
+    <input type="submit" value="ค้นหา">
+</form>
+
+
+<h3>{{search_username}}</h3>
+{% if students and search_username%}
+    <ul>
+    {% for student in students %}
+        {% if search_username.lower in student.stu_name.lower or search_username in student.stu_id%}
+        <form action="{% url 'checkSub' %}" method="post">
+        {% csrf_token %}
+        <li>{{student.stu_id}} {{student.stu_name}} 
+            <button type="submit" name = "student" value = "{{student.stu_id}}">รายชื่อวิชาที่ลง</button>
+        </li>
+        </form>
+        {% endif %}
+        <br>
+    {% empty %}
+        <li>No Student.</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<br>
+<br>
+<br>
+<input type="button" onclick="location.href='/';" value="ย้อนกลับ">
+
+{% endblock %}
+
